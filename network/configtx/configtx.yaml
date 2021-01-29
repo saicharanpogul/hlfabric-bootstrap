@@ -1,0 +1,221 @@
+Organizations:
+  - &Shipper
+      Name: ShipperMSP
+      ID: ShipperMSP
+      MSPDir: ../organizations/peerOrganizations/shipper.example.com/msp
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('ShipperMSP.admin', 'ShipperMSP.peer', 'ShipperMSP.client')"
+        Writers:
+          Type: Signature
+          Rule: "OR('ShipperMSP.admin', 'ShipperMSP.client')"
+        Admins:
+          Type: Signature
+          Rule: "OR('ShipperMSP.admin')"
+        Endorsement:
+          Type: Signature
+          Rule: "OR('ShipperMSP.peer')"
+      AnchorPeers:
+        - Host: peer0.shipper.example.com
+          Port: 7051
+
+  - &ATAFreight
+      Name: ATAFreightMSP
+      ID: ATAFreightMSP
+      MSPDir: ../organizations/peerOrganizations/ata_freight.example.com/msp
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('ATAFreightMSP.admin', 'ATAFreightMSP.peer', 'ATAFreightMSP.client')"
+        Writers:
+          Type: Signature
+          Rule: "OR('ATAFreightMSP.admin', 'ATAFreightMSP.client')"
+        Admins:
+          Type: Signature
+          Rule: "OR('ATAFreightMSP.admin')"
+        Endorsement:
+          Type: Signature
+          Rule: "OR('ATAFreightMSP.peer')"
+      AnchorPeers:
+        - Host: peer0.ata_freight.example.com
+          Port: 9051
+
+  - &Carrier
+      Name: CarrierMSP
+      ID: CarrierMSP
+      MSPDir: ../organizations/peerOrganizations/carrier.example.com/msp
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('CarrierMSP.admin', 'CarrierMSP.peer', 'CarrierMSP.client')"
+        Writers:
+          Type: Signature
+          Rule: "OR('CarrierMSP.admin', 'CarrierMSP.client')"
+        Admins:
+          Type: Signature
+          Rule: "OR('CarrierMSP.admin')"
+        Endorsement:
+          Type: Signature
+          Rule: "OR('CarrierMSP.peer')"
+      AnchorPeers:
+        - Host: peer0.carrier.example.com
+          Port: 11051
+
+  - &ExportCustom
+      Name: ExportCustomMSP
+      ID: ExportCustomMSP
+      MSPDir: ../organizations/peerOrganizations/export_custom.example.com/msp
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('ExportCustomMSP.admin', 'ExportCustomMSP.peer', 'ExportCustomMSP.client')"
+        Writers:
+          Type: Signature
+          Rule: "OR('ExportCustomMSP.admin', 'ExportCustomMSP.client')"
+        Admins:
+          Type: Signature
+          Rule: "OR('ExportCustomMSP.admin')"
+        Endorsement:
+          Type: Signature
+          Rule: "OR('ExportCustomMSP.peer')"
+      AnchorPeers:
+        - Host: peer0.export_custom.example.com
+          Port: 13051
+
+  - &Consignee
+      Name: ConsigneeMSP
+      ID: ConsigneeMSP
+      MSPDir: ../organizations/peerOrganizations/consignee.example.com/msp
+      Policies:
+        Readers:
+          Type: Signature
+          Rule: "OR('ConsigneeMSP.admin', 'ConsigneeMSP.peer', 'ConsigneeMSP.client')"
+        Writers:
+          Type: Signature
+          Rule: "OR('ConsigneeMSP.admin', 'ConsigneeMSP.client')"
+        Admins:
+          Type: Signature
+          Rule: "OR('ConsigneeMSP.admin')"
+        Endorsement:
+          Type: Signature
+          Rule: "OR('ConsigneeMSP.peer')"
+      AnchorPeers:
+        - Host: peer0.consignee.example.com
+          Port: 15051
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+  Orderer: &OrdererCapabilities
+    V2_0: true
+  Application: &ApplicationCapabilities
+    V2_0: true
+
+Application: &ApplicationDefaults
+  Organizations:
+
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+Orderer: &OrdererDefaults
+  OrdererType: etcdraft
+  Addresses:
+    - orderer0.ata_freight.example.com
+    - orderer1.carrier.example.com
+    - orderer2.export_custom.example.com
+  EtcdRaft:
+    Consenters:
+    - Host: orderer0.ata_freight.example.com
+      Port: 9050
+      ClientTLSCert: ../organizations/peerOrganizations/ata_freight.example.com/orderers/orderer0.ata_freight.example.com/tls/server.crt
+      ServerTLSCert: ../organizations/peerOrganizations/ata_freight.example.com/orderers/orderer0.ata_freight.example.com/tls/server.crt
+    - Host: orderer1.carrier.example.com
+      Port: 11050
+      ClientTLSCert: ../organizations/peerOrganizations/carrier.example.com/orderers/orderer1.carrier.example.com/tls/server.crt
+      ServerTLSCert: ../organizations/peerOrganizations/carrier.example.com/orderers/orderer1.carrier.example.com/tls/server.crt
+    - Host: orderer2.export_custom.example.com
+      Port: 13050
+      ClientTLSCert: ../organizations/peerOrganizations/export_custom.example.com/orderers/orderer2.export_custom.example.com/tls/server.crt
+      ServerTLSCert: ../organizations/peerOrganizations/export_custom.example.com/orderers/orderer2.export_custom.example.com/tls/server.crt
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Organizations:
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+  Capabilities:
+    <<: *ChannelCapabilities
+
+Profiles:
+  OrdererSystemGenesisChannel:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *ATAFreight
+        - *Carrier
+        - *ExportCustom
+    Consortiums:
+      SupplychainConsortium:
+        Organizations:
+          - *Shipper
+          - *ATAFreight
+          - *Carrier
+          - *ExportCustom
+          - *Consignee
+  
+  ApplicationChannel:
+    Consortium: SupplychainConsortium
+    <<: *ChannelDefaults
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *Shipper
+        - *ATAFreight
+        - *Carrier
+        - *ExportCustom
+        - *Consignee
+      Capabilities:
+        <<: *ApplicationCapabilities
