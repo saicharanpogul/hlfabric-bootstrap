@@ -6,7 +6,7 @@ export ORDERER_CA=${PWD}/organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.
 
 ORG_PORT=`expr $PORT + 1`
 
-ORG_NAME2="ata_freight"
+ORG_NAME2="freight"
 DOMAIN_NAME2="example"
 ORG2_PORT="9051"
 
@@ -14,7 +14,7 @@ ORG_NAME3="carrier"
 DOMAIN_NAME3="example"
 ORG3_PORT="11051"
 
-ORG_NAME4="export_custom"
+ORG_NAME4="custom"
 DOMAIN_NAME4="example"
 ORG4_PORT="13051"
 
@@ -43,7 +43,7 @@ CHAINCODE_LABEL="supplychain_1"
 setEnv() {
   PEER0_PORT=`expr $PORT + 1`
   export CORE_PEER_TLS_ENABLED=true
-  export CORE_PEER_LOCALMSPID=${ORG_NAME}MSP
+  export CORE_PEER_LOCALMSPID=${ORG_NAME^}MSP
   export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/peers/peer0.$ORG_NAME.$DOMAIN_NAME.com/tls/ca.crt
   export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/users/Admin@$ORG_NAME.$DOMAIN_NAME.com/msp
   export CORE_PEER_ADDRESS=localhost:$PEER0_PORT

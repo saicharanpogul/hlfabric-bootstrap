@@ -20,25 +20,25 @@ Organizations:
         - Host: peer0.shipper.example.com
           Port: 7051
 
-  - &ATAFreight
-      Name: ATAFreightMSP
-      ID: ATAFreightMSP
-      MSPDir: ../organizations/peerOrganizations/ata_freight.example.com/msp
+  - &Freight
+      Name: FreightMSP
+      ID: FreightMSP
+      MSPDir: ../organizations/peerOrganizations/freight.example.com/msp
       Policies:
         Readers:
           Type: Signature
-          Rule: "OR('ATAFreightMSP.admin', 'ATAFreightMSP.peer', 'ATAFreightMSP.client')"
+          Rule: "OR('FreightMSP.admin', 'FreightMSP.peer', 'FreightMSP.client')"
         Writers:
           Type: Signature
-          Rule: "OR('ATAFreightMSP.admin', 'ATAFreightMSP.client')"
+          Rule: "OR('FreightMSP.admin', 'FreightMSP.client')"
         Admins:
           Type: Signature
-          Rule: "OR('ATAFreightMSP.admin')"
+          Rule: "OR('FreightMSP.admin')"
         Endorsement:
           Type: Signature
-          Rule: "OR('ATAFreightMSP.peer')"
+          Rule: "OR('FreightMSP.peer')"
       AnchorPeers:
-        - Host: peer0.ata_freight.example.com
+        - Host: peer0.freight.example.com
           Port: 9051
 
   - &Carrier
@@ -62,25 +62,25 @@ Organizations:
         - Host: peer0.carrier.example.com
           Port: 11051
 
-  - &ExportCustom
-      Name: ExportCustomMSP
-      ID: ExportCustomMSP
-      MSPDir: ../organizations/peerOrganizations/export_custom.example.com/msp
+  - &Custom
+      Name: CustomMSP
+      ID: CustomMSP
+      MSPDir: ../organizations/peerOrganizations/custom.example.com/msp
       Policies:
         Readers:
           Type: Signature
-          Rule: "OR('ExportCustomMSP.admin', 'ExportCustomMSP.peer', 'ExportCustomMSP.client')"
+          Rule: "OR('CustomMSP.admin', 'CustomMSP.peer', 'CustomMSP.client')"
         Writers:
           Type: Signature
-          Rule: "OR('ExportCustomMSP.admin', 'ExportCustomMSP.client')"
+          Rule: "OR('CustomMSP.admin', 'CustomMSP.client')"
         Admins:
           Type: Signature
-          Rule: "OR('ExportCustomMSP.admin')"
+          Rule: "OR('CustomMSP.admin')"
         Endorsement:
           Type: Signature
-          Rule: "OR('ExportCustomMSP.peer')"
+          Rule: "OR('CustomMSP.peer')"
       AnchorPeers:
-        - Host: peer0.export_custom.example.com
+        - Host: peer0.custom.example.com
           Port: 13051
 
   - &Consignee
@@ -137,23 +137,23 @@ Application: &ApplicationDefaults
 Orderer: &OrdererDefaults
   OrdererType: etcdraft
   Addresses:
-    - orderer0.ata_freight.example.com
-    - orderer1.carrier.example.com
-    - orderer2.export_custom.example.com
+    - orderer0.freight.example.com:9050
+    - orderer1.carrier.example.com:11050
+    - orderer2.custom.example.com:13050
   EtcdRaft:
     Consenters:
-    - Host: orderer0.ata_freight.example.com
+    - Host: orderer0.freight.example.com
       Port: 9050
-      ClientTLSCert: ../organizations/peerOrganizations/ata_freight.example.com/orderers/orderer0.ata_freight.example.com/tls/server.crt
-      ServerTLSCert: ../organizations/peerOrganizations/ata_freight.example.com/orderers/orderer0.ata_freight.example.com/tls/server.crt
+      ClientTLSCert: ../organizations/peerOrganizations/freight.example.com/orderers/orderer0.freight.example.com/tls/server.crt
+      ServerTLSCert: ../organizations/peerOrganizations/freight.example.com/orderers/orderer0.freight.example.com/tls/server.crt
     - Host: orderer1.carrier.example.com
       Port: 11050
       ClientTLSCert: ../organizations/peerOrganizations/carrier.example.com/orderers/orderer1.carrier.example.com/tls/server.crt
       ServerTLSCert: ../organizations/peerOrganizations/carrier.example.com/orderers/orderer1.carrier.example.com/tls/server.crt
-    - Host: orderer2.export_custom.example.com
+    - Host: orderer2.custom.example.com
       Port: 13050
-      ClientTLSCert: ../organizations/peerOrganizations/export_custom.example.com/orderers/orderer2.export_custom.example.com/tls/server.crt
-      ServerTLSCert: ../organizations/peerOrganizations/export_custom.example.com/orderers/orderer2.export_custom.example.com/tls/server.crt
+      ClientTLSCert: ../organizations/peerOrganizations/custom.example.com/orderers/orderer2.custom.example.com/tls/server.crt
+      ServerTLSCert: ../organizations/peerOrganizations/custom.example.com/orderers/orderer2.custom.example.com/tls/server.crt
   BatchTimeout: 2s
   BatchSize:
     MaxMessageCount: 10
@@ -194,16 +194,18 @@ Profiles:
     Orderer:
       <<: *OrdererDefaults
       Organizations:
-        - *ATAFreight
+        - *Freight
         - *Carrier
-        - *ExportCustom
+        - *Custom
+      Capabilities:
+        <<: *OrdererCapabilities
     Consortiums:
       SupplychainConsortium:
         Organizations:
           - *Shipper
-          - *ATAFreight
+          - *Freight
           - *Carrier
-          - *ExportCustom
+          - *Custom
           - *Consignee
   
   ApplicationChannel:
@@ -213,9 +215,9 @@ Profiles:
       <<: *ApplicationDefaults
       Organizations:
         - *Shipper
-        - *ATAFreight
+        - *Freight
         - *Carrier
-        - *ExportCustom
+        - *Custom
         - *Consignee
       Capabilities:
         <<: *ApplicationCapabilities

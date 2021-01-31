@@ -9,7 +9,7 @@ export ORDERER_CA=${PWD}/organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.
 setEnvPeer0() {
   PEER0_PORT=`expr $PORT + 1`
   export PEER0_CA=${PWD}/organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/peers/peer0.$ORG_NAME.$DOMAIN_NAME.com/tls/ca.crt
-  export CORE_PEER_LOCALMSPID=${ORG_NAME}MSP
+  export CORE_PEER_LOCALMSPID=${ORG_NAME^}MSP
   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_CA
   export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/users/Admin@$ORG_NAME.$DOMAIN_NAME.com/msp
   export CORE_PEER_ADDRESS=localhost:$PEER0_PORT
@@ -18,7 +18,7 @@ setEnvPeer0() {
 setEnvPeer1() {
   PEER1_PORT=`expr $PORT + 1001`
   export PEER1_CA=${PWD}/organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/peers/peer1.$ORG_NAME.$DOMAIN_NAME.com/tls/ca.crt
-  export CORE_PEER_LOCALMSPID=${ORG_NAME}MSP
+  export CORE_PEER_LOCALMSPID=${ORG_NAME^}MSP
   export CORE_PEER_TLS_ROOTCERT_FILE=$PEER1_CA
   export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/users/Admin@$ORG_NAME.$DOMAIN_NAME.com/msp
   export CORE_PEER_ADDRESS=localhost:$PEER1_PORT

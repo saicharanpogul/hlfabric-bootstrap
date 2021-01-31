@@ -4,12 +4,14 @@ source ../../terminal_control.sh
 echo "version: '2'
 
 volumes: 
-  orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com
-  peer0.$ORG_NAME.$DOMAIN_NAME.com
-  peer1.$ORG_NAME.$DOMAIN_NAME.com
+  orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com:
+  peer0.$ORG_NAME.$DOMAIN_NAME.com:
+  peer1.$ORG_NAME.$DOMAIN_NAME.com:
 
 networks: 
   $NETWORK:
+      external: 
+      name: $NETWORK
 
 services: 
 

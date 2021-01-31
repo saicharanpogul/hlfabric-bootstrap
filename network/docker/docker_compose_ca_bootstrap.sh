@@ -44,6 +44,8 @@ echo "version: '2'
 
 networks: 
   ${NETWORK}:
+      external: 
+      name: ${NETWORK}
 
 services: 
   

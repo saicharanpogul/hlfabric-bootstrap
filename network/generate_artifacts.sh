@@ -31,12 +31,12 @@ generateChannelConfigBlock() {
 }
 
 anchorPeerUpdate() {
-  print Green "========== Generating Anchor Peer Update Transaction For ${ORG_NAME}MSP =========="
+  print Green "========== Generating Anchor Peer Update Transaction For ${ORG_NAME^}MSP =========="
   echo
 
-  ../bin/configtxgen -profile ApplicationChannel -configPath ./configtx/ -outputAnchorPeersUpdate ./channel-artifacts/${ORG_NAME}MSPAnchor.tx -channelID $CHANNEL_NAME -asOrg ${ORG_NAME}MSP
+  ../bin/configtxgen -profile ApplicationChannel -configPath ./configtx/ -outputAnchorPeersUpdate ./channel-artifacts/${ORG_NAME^}MSPAnchor.tx -channelID $CHANNEL_NAME -asOrg ${ORG_NAME^}MSP
 
-  print Green "========== Anchor Peer Update For ${ORG_NAME}MSP Transaction Generated =========="
+  print Green "========== Anchor Peer Update For ${ORG_NAME^}MSP Transaction Generated =========="
   echo
 }
 

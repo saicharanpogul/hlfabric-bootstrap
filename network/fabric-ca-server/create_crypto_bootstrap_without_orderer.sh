@@ -122,6 +122,30 @@ generateCrypto() {
 
   cp ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/peers/peer1.$ORG_NAME.$DOMAIN_NAME.com/tls/keystore/* ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/peers/peer1.$ORG_NAME.$DOMAIN_NAME.com/tls/server.key
 
+  # User1
+
+  mkdir -p ../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/users
+  mkdir -p ../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/users/User1@$ORG_NAME.$DOMAIN_NAME.com
+
+  echo 
+  echo "Generate User1 MSP"
+  echo
+
+  fabric-ca-client enroll -u https://user1:user1pw@localhost:$CA_PORT --caname ca.$ORG_NAME.$DOMAIN_NAME.com -M ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/users/User1@$ORG_NAME.$DOMAIN_NAME.com/msp --tls.certfiles ${PWD}/../organizations/fabric-ca/$ORG_NAME/tls-cert.pem
+
+  # Admin User
+
+  mkdir -p ../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/users/Admin@$ORG_NAME.$DOMAIN_NAME.com 
+
+  echo
+  echo "Generate Admin User MSP"
+  echo
+
+  fabric-ca-client enroll -u https://$ORG_NAME:adminpw@localhost:$CA_PORT --caname ca.$ORG_NAME.$DOMAIN_NAME.com -M ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/users/Admin@$ORG_NAME.$DOMAIN_NAME.com/msp --tls.certfiles ${PWD}/../organizations/fabric-ca/$ORG_NAME/tls-cert.pem
+
+  cp ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/msp/config.yaml ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/users/Admin@$ORG_NAME.$DOMAIN_NAME.com/msp/config.yaml
+
+
   # #  Orderer0
 
   # mkdir -p ../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/orderers/$ORG_NAME.$DOMAIN_NAME.com

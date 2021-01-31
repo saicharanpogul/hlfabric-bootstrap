@@ -1,7 +1,7 @@
 #!/bin/bash
 source ../../../terminal_control.sh
 
-ORG_MSP="${ORG_NAME}MSP"
+ORG_MSP="${ORG_NAME^}MSP"
 ORDERER_PORT=$PORT
 
 PEER0_PORT=`expr $ORDERER_PORT + 1`
