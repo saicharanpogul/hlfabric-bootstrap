@@ -41,10 +41,10 @@ generateCrypto() {
   fabric-ca-client register --caname ca.$ORG_NAME.$DOMAIN_NAME.com --id.name peer1 --id.secret peer1pw --id.type peer --tls.certfiles ${PWD}/../organizations/fabric-ca/$ORG_NAME/tls-cert.pem
 
   echo
-  echo "Register orderer0.$ORG_NAME"
+  echo "Register orderer$ORDERER_NUMBER.$ORG_NAME"
   echo
 
-  fabric-ca-client register --caname ca.$ORG_NAME.$DOMAIN_NAME.com --id.name orderer0 --id.secret orderer0pw --id.type orderer --tls.certfiles ${PWD}/../organizations/fabric-ca/$ORG_NAME/tls-cert.pem
+  fabric-ca-client register --caname ca.$ORG_NAME.$DOMAIN_NAME.com --id.name orderer$ORDERER_NUMBER --id.secret orderer${ORDERER_NUMBER}pw --id.type orderer --tls.certfiles ${PWD}/../organizations/fabric-ca/$ORG_NAME/tls-cert.pem
 
   echo
   echo "Register user1.$ORG_NAME"
@@ -56,7 +56,7 @@ generateCrypto() {
   echo "Register admin.$ORG_NAME"
   echo
 
-  fabric-ca-client register --caname ca.$ORG_NAME.$DOMAIN_NAME.com --id.name $ORG_NAME --id.secret adminpw --id.type admin --tls.certfiles ${PWD}/../organizations/fabric-ca/$ORG_NAME/tls-cert.pem
+  fabric-ca-client register --caname ca.$ORG_NAME.$DOMAIN_NAME.com --id.name admin1 --id.secret adminpw --id.type admin --tls.certfiles ${PWD}/../organizations/fabric-ca/$ORG_NAME/tls-cert.pem
 
   mkdir -p ../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/peers
 
@@ -141,7 +141,7 @@ generateCrypto() {
   echo "Generate Admin User MSP"
   echo
 
-  fabric-ca-client enroll -u https://$ORG_NAME:adminpw@localhost:$CA_PORT --caname ca.$ORG_NAME.$DOMAIN_NAME.com -M ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/users/Admin@$ORG_NAME.$DOMAIN_NAME.com/msp --tls.certfiles ${PWD}/../organizations/fabric-ca/$ORG_NAME/tls-cert.pem
+  fabric-ca-client enroll -u https://admin1:adminpw@localhost:$CA_PORT --caname ca.$ORG_NAME.$DOMAIN_NAME.com -M ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/users/Admin@$ORG_NAME.$DOMAIN_NAME.com/msp --tls.certfiles ${PWD}/../organizations/fabric-ca/$ORG_NAME/tls-cert.pem
 
   cp ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/msp/config.yaml ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/users/Admin@$ORG_NAME.$DOMAIN_NAME.com/msp/config.yaml
 
@@ -153,7 +153,7 @@ generateCrypto() {
   echo "Generate the Orderer MSP"
   echo
 
-  fabric-ca-client enroll -u https://orderer0:orderer0pw@localhost:$CA_PORT --caname ca.$ORG_NAME.$DOMAIN_NAME.com -M ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/orderers/orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com/msp --csr.hosts orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com --csr.hosts localhost --tls.certfiles ${PWD}/../organizations/fabric-ca/$ORG_NAME/tls-cert.pem
+  fabric-ca-client enroll -u https://orderer$ORDERER_NUMBER:orderer${ORDERER_NUMBER}pw@localhost:$CA_PORT --caname ca.$ORG_NAME.$DOMAIN_NAME.com -M ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/orderers/orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com/msp --csr.hosts orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com --csr.hosts localhost --tls.certfiles ${PWD}/../organizations/fabric-ca/$ORG_NAME/tls-cert.pem
 
   cp ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/msp/config.yaml ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/orderers/orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com/msp/config.yaml
 
@@ -161,7 +161,7 @@ generateCrypto() {
   echo "Generate the orderer TLS-Certs"
   echo
 
-  fabric-ca-client enroll -u https://orderer0:orderer0pw@localhost:$CA_PORT --caname ca.$ORG_NAME.$DOMAIN_NAME.com -M ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/orderers/orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com/tls --enrollment.profile tls --csr.hosts orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com --csr.hosts localhost --tls.certfiles ${PWD}/../organizations/fabric-ca/$ORG_NAME/tls-cert.pem
+  fabric-ca-client enroll -u https://orderer$ORDERER_NUMBER:orderer${ORDERER_NUMBER}pw@localhost:$CA_PORT --caname ca.$ORG_NAME.$DOMAIN_NAME.com -M ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/orderers/orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com/tls --enrollment.profile tls --csr.hosts orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com --csr.hosts localhost --tls.certfiles ${PWD}/../organizations/fabric-ca/$ORG_NAME/tls-cert.pem
 
   cp ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/orderers/orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com/tls/tlscacerts/* ${PWD}/../organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/orderers/orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com/tls/ca.crt
 

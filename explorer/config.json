@@ -1,0 +1,9 @@
+{
+	"network-configs": {
+		"test-network": {
+			"name": "supplychain",
+			"profile": "./connection-profile/explorer-profile.json"
+		}
+	},
+	"license": "Apache-2.0"
+}

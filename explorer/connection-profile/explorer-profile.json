@@ -1,0 +1,48 @@
+{
+	"name": "supplychain",
+	"version": "1.0.0",
+	"client": {
+		"tlsEnable": true,
+		"adminCredential": {
+			"id": "exploreradmin",
+			"password": "exploreradminpw"
+		},
+		"enableAuthentication": true,
+		"organization": "FreightMSP",
+		"connection": {
+			"timeout": {
+				"peer": {
+					"endorser": "300"
+				},
+				"orderer": "300"
+			}
+		}
+	},
+	"channels": {
+		"supplychain-channel": {
+			"peers": {
+				"peer0.freight.example.com": {}
+			}
+		}
+	},
+	"organizations": {
+		"FreightMSP": {
+			"mspid": "FreightMSP",
+			"adminPrivateKey": {
+				"path": "/tmp/crypto/peerOrganizations/freight.example.com/users/Admin@freight.example.com/msp/keystore/954c46ed03804e690031eb979d190516294e3b99d18734484256a21485ee2f6b_sk"
+			},
+			"peers": ["peer0.freight.example.com"],
+			"signedCert": {
+				"path": "/tmp/crypto/peerOrganizations/freight.example.com/users/Admin@freight.example.com/msp/signcerts/cert.pem"
+			}
+		}
+	},
+	"peers": {
+		"peer0.freight.example.com": {
+			"tlsCACerts": {
+				"path": "/tmp/crypto/peerOrganizations/freight.example.com/peers/peer0.freight.example.com/tls/ca.crt"
+			},
+			"url": "grpcs://peer0.freight.example.com:9051"
+		}
+	}
+}

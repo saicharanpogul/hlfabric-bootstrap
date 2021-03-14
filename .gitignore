@@ -1,0 +1,5 @@
+**/api
+**/bin
+common-connection-profile.json
+conf.yaml
+discovery.json

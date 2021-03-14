@@ -6,10 +6,10 @@ Organizations:
       Policies:
         Readers:
           Type: Signature
-          Rule: "OR('ShipperMSP.admin', 'ShipperMSP.peer', 'ShipperMSP.client')"
+          Rule: "OR('ShipperMSP.member')"
         Writers:
           Type: Signature
-          Rule: "OR('ShipperMSP.admin', 'ShipperMSP.client')"
+          Rule: "OR('ShipperMSP.member')"
         Admins:
           Type: Signature
           Rule: "OR('ShipperMSP.admin')"
@@ -27,10 +27,10 @@ Organizations:
       Policies:
         Readers:
           Type: Signature
-          Rule: "OR('FreightMSP.admin', 'FreightMSP.peer', 'FreightMSP.client')"
+          Rule: "OR('FreightMSP.member')"
         Writers:
           Type: Signature
-          Rule: "OR('FreightMSP.admin', 'FreightMSP.client')"
+          Rule: "OR('FreightMSP.member')"
         Admins:
           Type: Signature
           Rule: "OR('FreightMSP.admin')"
@@ -48,10 +48,10 @@ Organizations:
       Policies:
         Readers:
           Type: Signature
-          Rule: "OR('CarrierMSP.admin', 'CarrierMSP.peer', 'CarrierMSP.client')"
+          Rule: "OR('CarrierMSP.member')"
         Writers:
           Type: Signature
-          Rule: "OR('CarrierMSP.admin', 'CarrierMSP.client')"
+          Rule: "OR('CarrierMSP.member')"
         Admins:
           Type: Signature
           Rule: "OR('CarrierMSP.admin')"
@@ -69,10 +69,10 @@ Organizations:
       Policies:
         Readers:
           Type: Signature
-          Rule: "OR('CustomMSP.admin', 'CustomMSP.peer', 'CustomMSP.client')"
+          Rule: "OR('CustomMSP.member')"
         Writers:
           Type: Signature
-          Rule: "OR('CustomMSP.admin', 'CustomMSP.client')"
+          Rule: "OR('CustomMSP.member')"
         Admins:
           Type: Signature
           Rule: "OR('CustomMSP.admin')"
@@ -90,10 +90,10 @@ Organizations:
       Policies:
         Readers:
           Type: Signature
-          Rule: "OR('ConsigneeMSP.admin', 'ConsigneeMSP.peer', 'ConsigneeMSP.client')"
+          Rule: "OR('ConsigneeMSP.member')"
         Writers:
           Type: Signature
-          Rule: "OR('ConsigneeMSP.admin', 'ConsigneeMSP.client')"
+          Rule: "OR('ConsigneeMSP.member')"
         Admins:
           Type: Signature
           Rule: "OR('ConsigneeMSP.admin')"
@@ -191,6 +191,8 @@ Channel: &ChannelDefaults
 Profiles:
   OrdererSystemGenesisChannel:
     <<: *ChannelDefaults
+    Capabilities:
+      <<: *ChannelCapabilities
     Orderer:
       <<: *OrdererDefaults
       Organizations:

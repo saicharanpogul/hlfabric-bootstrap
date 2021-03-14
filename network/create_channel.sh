@@ -3,7 +3,7 @@ source ../terminal_control.sh
 
 export FABRIC_CFG_PATH=${HOME}/fabric/config/
 export CORE_PEER_TLS_ENABLED=true
-export ORDERER_CA=${PWD}/organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/orderers/orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com/msp/tlscacerts/tlsca.$DOMAIN_NAME.com-cert.pem
+export ORDERER_CA=${PWD}/organizations/peerOrganizations/$ORG_NAME.$DOMAIN_NAME.com/orderers/orderer$ORDERER_NUMBER.$ORG_NAME.$DOMAIN_NAME.com/msp/tlscacerts/tlsca.$ORG_NAME.$DOMAIN_NAME.com-cert.pem
 
 
 setEnvPeer0() {
@@ -80,18 +80,19 @@ then
 createChannel
 fi
 
+print Blue "Joining Channel and Anchor Peer Update"
 print Yellow "For 1 Peer/2 Peers(1/2):"
 read NUMBER_OF_PEERS
 
-if [[ $NUMBER_OF_PEERS == 1]]
+if [[ $NUMBER_OF_PEERS == 1 ]]
 then
 peer0JoinChannel
-anchorPeerUpdate
 elif [[ $NUMBER_OF_PEERS == 2 ]]
 then
 peer0JoinChannel
 peer1JoinChannel
-anchorPeerUpdate
 else
 print Red "Invalid Input(either 1/2)."
 fi
+
+anchorPeerUpdate

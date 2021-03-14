@@ -10,7 +10,9 @@ PORTS="${PORT_NO}:${PORT_NO}"
 echo "version: '2'
 
 networks: 
-  ${NETWORK}:
+  $NETWORK:
+      external: 
+        name: $NETWORK
 
 services: 
   

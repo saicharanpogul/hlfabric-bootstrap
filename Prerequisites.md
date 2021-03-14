@@ -1,7 +1,8 @@
 # Prerequisites for Hyperledger Fabric
 
 ### Virtual Machine (VirtualBox)
-* Ubuntu 20.04 - 4GB RAM, 80GB Storage
+* Ubuntu 20.04 - 4GB RAM, 40GB Storage
+* Ubuntu 20.04 - 2GB RAM, 20GB Storage
 
 ### OpenSSH
 ```
