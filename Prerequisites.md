@@ -200,13 +200,18 @@ export PATH=$HOME/fabric/fabric-samples/bin:$PATH
 .
 +-- <b><span style="color:aqua">api</span></b>
 |   +-- <span style="color:aqua">wallet</span>
-|   +-- <span style="color:CornflowerBlue">connection-profile.json</span>
-|   +-- <span style="color:CornflowerBlue">enroll-admin.json</span>
-|   +-- <span style="color:CornflowerBlue">register-enroll-client-user.js</span>
-|   +-- <span style="color:CornflowerBlue">server.js</span>
-|   +-- <span style="color:CornflowerBlue">package-lock.json</span>
-|   +-- <span style="color:CornflowerBlue">package.json</span>
-+-- <b><span style="color:aqua">chaincode/supplychain/go</span></b>
+|   +-- <span style="color:aqua">client</span>
+|       +-- <span style="color:CornflowerBlue">connection-profile.json</span>
+|       +-- <span style="color:CornflowerBlue">Dockerfile</span>
+|       +-- <span style="color:CornflowerBlue">enroll-admin.json</span>
+|       +-- <span style="color:CornflowerBlue">register-enroll-client-user.js</span>
+|       +-- <span style="color:CornflowerBlue">server.js</span>
+|       +-- <span style="color:CornflowerBlue">package-lock.json</span>
+|       +-- <span style="color:CornflowerBlue">package.json</span>
+|   +-- <span style="color:CornflowerBlue">.env</span>
+|   +-- <span style="color:CornflowerBlue">docker-compose.yaml</span>
++-- <b><span style="color:aqua">bin</span></b>
++-- <b><span style="color:aqua">chaincode/github.com/go</span></b>
 |   +-- <span style="color:CornflowerBlue">chaincode.go</span>
 |   +-- <span style="color:CornflowerBlue">go.mod</span>
 |   +-- <span style="color:CornflowerBlue">go.sum</span>
@@ -214,6 +219,11 @@ export PATH=$HOME/fabric/fabric-samples/bin:$PATH
 |   +-- <span style="color:CornflowerBlue">configtx.yaml</span>
 |   +-- <span style="color:CornflowerBlue">core.yaml</span>
 |   +-- <span style="color:CornflowerBlue">orderer.yaml</span>
++-- <b><span style="color:aqua">explorer</span></b>
+|   +-- <span style="color:aqua">connection-profile</span>
+|       +--<span style="color:CornflowerBlue">explorer-profile.json</span>
+|   +-- <span style="color:CornflowerBlue">config.json</span>
+|   +-- <span style="color:CornflowerBlue">docker-compose.yaml</span>
 +-- <b><span style="color:aqua">network</span></b>
 |   +-- <b><span style="color:aqua">configtx</span></b>
 |       +-- <span style="color:CornflowerBlue">configtx.yaml</span>
@@ -226,15 +236,17 @@ export PATH=$HOME/fabric/fabric-samples/bin:$PATH
 |       +-- <span style="color:CornflowerBlue">docker-compose.yaml</span>
 |   +-- <span style="color:aqua">organizations</span>
 |   +-- <span style="color:CornflowerBlue">chaincode_lifecycle.sh</span>
-|   +-- <span style="color:CornflowerBlue">create_artifacts.sh</span>
+|   +-- <span style="color:CornflowerBlue">chaincode_cli_cmd.sh</span>
+|   +-- <span style="color:CornflowerBlue">chaincode_pre_setup.sh</span>
+|   +-- <span style="color:CornflowerBlue">generate_artifacts.sh</span>
 |   +-- <span style="color:CornflowerBlue">create_channel.sh</span>
-|   +-- <span style="color:CornflowerBlue">start_ca.sh</span>
-|   +-- <span style="color:CornflowerBlue">start_network.sh</span>
-|   +-- <span style="color:CornflowerBlue">stop_ca.sh</span>
-|   +-- <span style="color:CornflowerBlue">stop_network.sh</span>
-|   +-- <span style="color:CornflowerBlue">teardown_ca.sh</span>
-|   +-- <span style="color:CornflowerBlue">teardown_network.sh</span>
-|   +-- <span style="color:CornflowerBlue">terminal_control.sh</span>
++-- <span style="color:CornflowerBlue">set_org_env_var.sh</span>
++-- <span style="color:CornflowerBlue">api.sh</span>
++-- <span style="color:CornflowerBlue">explorer.sh</span>
++-- <span style="color:CornflowerBlue">start.sh</span>
++-- <span style="color:CornflowerBlue">stop.sh</span>
++-- <span style="color:CornflowerBlue">down.sh</span>
++-- <span style="color:CornflowerBlue">terminal_control.sh</span>
 </pre>
 
 
@@ -244,3 +256,29 @@ sudo scp -P 2232 terminal_control.sh hlfabric@127.0.0.1:~/fabric
 sudo scp -P 2232 -r network hlfabric@127.0.0.1:~/fabric
 
 <span style="color:CornflowerBlue"></span> -->
+
+_Docker Swarm_
+
+- Init: 
+```docker swarm init --advertise-addr <LEADER_IP>``` 
+
+- Join Manager [Leader]
+```docker swarm join-token manager```
+
+- Join Worker:
+```docker swarm join --token <TOKEN> <LEADER_IP>:2377 --advertise-addr <WORKER_IP>```
+
+- Create Overlay Network
+```docker network create -d overlay <NETWORK_NAME>```
+
+
+_Artifacts Creation_
+- Generate genesis block & channel transaction only once. And save the .block files generated from genesis and channel configuration transactions.
+
+_Go Packages Vendor_
+
+- GO111MODULE=on go mod vendor
+
+_Fabric Client_
+- DockerFile:  ```docker build -t api:1.0 .```
+- Docker Compose ```docker-compose up -d```
